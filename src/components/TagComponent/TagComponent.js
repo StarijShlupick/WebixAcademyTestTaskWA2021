@@ -9,6 +9,7 @@ export class TagComponent extends HTMLElement {
   DOMmanipulations() {
     const checkbox = this.shadow.querySelector('.checkbox-button')
     checkbox.addEventListener('click', this.changeReadonly.bind(this))
+    this.readonly === 'true' ? checkbox.classList.add('active') : checkbox.classList.remove('active')
     const addButton = this.shadow.querySelector('.controll__button')
     addButton.addEventListener('click', this.addTag.bind(this))
     const listComponent = this.shadow.querySelectorAll('tag-list-element')

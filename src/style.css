@@ -35,7 +35,20 @@ p {
 
 body {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.git-link{
+  display: inline-block;
+  font-size: 22px;
+  text-decoration: underline;
+  margin: 40px;
+  transition: all .3s;
+}
+
+.git-link:hover{
+  background-color: #EBEDEF;
 }
