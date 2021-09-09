@@ -19,6 +19,8 @@ export class TagListElement extends HTMLElement {
       <button class="tag-list__close">❌</button>
     </main>
 
+
+
     <style>
       html {
         box-sizing: border-box;
@@ -31,6 +33,7 @@ export class TagListElement extends HTMLElement {
       .tag-list {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 95%;
         min-height: 40px;
         padding: 5px 10px;
@@ -38,6 +41,10 @@ export class TagListElement extends HTMLElement {
         border-radius: 10px;
         margin: 10px auto;
         font-size: 20px;
+      }
+      .tag-list__text {
+        max-width: 85%;
+        word-wrap: break-word;
       }
       .tag-list__close {
         display: block;

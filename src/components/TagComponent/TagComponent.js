@@ -57,7 +57,7 @@ export class TagComponent extends HTMLElement {
 
   addTag() {
     if (this.readonly === 'true') {
-      alert('Set Readonly mode to "FALSE"')
+      alert('Set Readonly mode to "OFF"')
       return
     }
     const input = this.shadow.querySelector('.controll__input')
@@ -73,7 +73,7 @@ export class TagComponent extends HTMLElement {
   }
 
   render() {
-    const tags = this.tagList.split(',').map((el) => {
+      const tags = this.tagList?.split(',').map((el) => {
       return `<tag-list-element tagContent=${el}></tag-list-element>`
     }).join('')
     this.shadow.innerHTML =`
@@ -85,8 +85,11 @@ export class TagComponent extends HTMLElement {
       <section class="tag-list">
         ${tags}
       </section>
-      <button class="checkbox-button">Readonly mode: ${this.readonly}</button>
+      <button class="checkbox-button">Readonly mode: ${this.readonly === 'true' ? 'on' : 'off'}</button>
     </main>
+
+
+
     <style>
       html {
         box-sizing: border-box;
@@ -99,13 +102,41 @@ export class TagComponent extends HTMLElement {
       .container {
         display: flex;
         flex-direction: column;
+        width: 300px;
         align-items: center;
         background-color: #EBEDEF;
         padding: 10px;
         border-radius: 15px;
       }
-      .checkbox-button.active {
-        background-color: red
+      .controll {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 40px;
+        border-radius: 15px;
+        background-color: #ffffff;
+        overflow: hidden;
+        margin: 10px;
+      }
+      .controll__input {
+        display: block;
+        width: 100%;
+        padding: 20px;
+        margin: 0;
+        border: none;
+        font-size: 20px;
+        line-height: 0;
+        outline: none;
+      }
+      .controll__button {
+        display: block;
+        padding: 20px;
+        margin: 0;
+        border: none;
+        background-color: #ABEBC6;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 0;
       }
       .tag-list {
         padding: 5px;
@@ -116,6 +147,21 @@ export class TagComponent extends HTMLElement {
         background-color: #ffffff;
         overflow: hidden;
         overflow-y: auto;
+      }
+      .checkbox-button {
+        display: block;
+        padding: 30px;
+        margin: 10px;
+        border: none;
+        border-radius: 100px;
+        background-color: #AED6F1;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 0;
+      }
+      .checkbox-button.active {
+        background-color: #CB4335;
+        color: #fff;
       }
     </style>
     `
