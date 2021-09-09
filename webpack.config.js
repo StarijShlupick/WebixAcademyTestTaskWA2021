@@ -17,7 +17,19 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'svg-url-loader',
+            options: {
+              iesafe: true,
+              limit: 10000,
+            },
+          },
+        ],
       },
     ],
   },

@@ -1,3 +1,5 @@
+import { TagListElement } from "../TagListElement/TagListElement";
+
 export class TagComponent extends HTMLElement {
   constructor() {
     super();
@@ -5,6 +7,7 @@ export class TagComponent extends HTMLElement {
   }
   
   connectedCallback() {
+    setTimeout(() => customElements.define('tag-list-element', TagListElement));
     if (window.localStorage.getItem('tag-list') === null) {
       window.localStorage.setItem('tag-list', '')
     }
@@ -70,6 +73,9 @@ export class TagComponent extends HTMLElement {
   }
 
   render() {
+    const tags = this.tagList.split(',').map((el) => {
+      return `<tag-list-element tagContent=${el}></tag-list-element>`
+    }).join('')
     this.shadow.innerHTML =`
     <main class="container">
       <section class="controll">
@@ -77,13 +83,39 @@ export class TagComponent extends HTMLElement {
           <button class="controll__button">Add</button>
       </section>
       <section class="tag-list">
-        ${this.tagList}
+        ${tags}
       </section>
       <button class="checkbox-button">Readonly mode: ${this.readonly}</button>
     </main>
     <style>
+      html {
+        box-sizing: border-box;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #EBEDEF;
+        padding: 10px;
+        border-radius: 15px;
+      }
       .checkbox-button.active {
         background-color: red
+      }
+      .tag-list {
+        padding: 5px;
+        margin: 5px;
+        height: 320px;
+        width: 100%;
+        border-radius: 15px 0 0 15px;
+        background-color: #ffffff;
+        overflow: hidden;
+        overflow-y: auto;
       }
     </style>
     `
