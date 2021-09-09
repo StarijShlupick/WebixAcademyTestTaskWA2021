@@ -5,14 +5,8 @@ export class TagComponent extends HTMLElement {
     super();
     this.shadow = this.attachShadow({mode: 'open'})
   }
-  
-  connectedCallback() {
-    setTimeout(() => customElements.define('tag-list-element', TagListElement));
-    if (window.localStorage.getItem('tag-list') === null) {
-      window.localStorage.setItem('tag-list', '')
-    }
-    this.tagList = window.localStorage.getItem('tag-list')
-    this.render()
+
+  DOMmanipulations() {
     const checkbox = this.shadow.querySelector('.checkbox-button')
     checkbox.addEventListener('click', this.changeReadonly.bind(this))
     const addButton = this.shadow.querySelector('.controll__button')
@@ -24,6 +18,16 @@ export class TagComponent extends HTMLElement {
         this.deleteTag(selectedTag)
       })
     })
+  }
+  
+  connectedCallback() {
+    setTimeout(() => customElements.define('tag-list-element', TagListElement));
+    if (window.localStorage.getItem('tag-list') === null) {
+      window.localStorage.setItem('tag-list', '')
+    }
+    this.tagList = window.localStorage.getItem('tag-list')
+    this.render()
+    this.DOMmanipulations()
   }
   
   static get observedAttributes() {
@@ -50,19 +54,8 @@ export class TagComponent extends HTMLElement {
     if (oldValue === newValue) {
       return
     }
-    this.render();
-    const checkbox = this.shadow.querySelector('.checkbox-button')
-    checkbox.addEventListener('click', this.changeReadonly.bind(this))
-    this.readonly === 'true' ? checkbox.classList.add('active') : checkbox.classList.remove('active')
-    const addButton = this.shadow.querySelector('.controll__button')
-    addButton.addEventListener('click', this.addTag.bind(this))
-    const listComponent = this.shadow.querySelectorAll('tag-list-element')
-    listComponent.forEach(element => {
-      element.addEventListener('tagClosed', (e) => {
-        const selectedTag = e.detail
-        this.deleteTag(selectedTag)
-      })
-    })
+    this.render()
+    this.DOMmanipulations()
   }
 
   changeReadonly() {
