@@ -72,9 +72,20 @@ export class TagComponent extends HTMLElement {
     this.tagList = newTagList
   }
 
+  deleteTag() {
+    if (this.readonly === 'true') {
+      alert('Set Readonly mode to "OFF"')
+      return
+    }
+    const tagListArray = window.localStorage.getItem('tag-list').split(',').filter((el) => el)
+    const newTagList = [inputValue, ...tagListArray].filter((el) => el).join(',')
+    window.localStorage.setItem('tag-list', newTagList)
+    this.tagList = newTagList
+  }
+
   render() {
-      const tags = this.tagList?.split(',').map((el) => {
-      return `<tag-list-element tagContent=${el}></tag-list-element>`
+    const tags = this.tagList?.split(',').map((el, index) => {
+      return `<tag-list-element tagContent="${el}" index=${index}></tag-list-element>`
     }).join('')
     this.shadow.innerHTML =`
     <main class="container">
