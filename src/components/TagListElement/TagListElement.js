@@ -1,25 +1,33 @@
-import deleteTag from '../../../assets/icons/cancel_white_24dp.svg'
-
 export class TagListElement extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({mode: 'open'})
   }
+
   connectedCallback() {
     this.render()
+    const closeButton = this.shadow.querySelector('.tag-list__close')
+    closeButton.addEventListener('click', (e) => {
+      this.dispatchEvent(new CustomEvent("tagClosed",{
+        detail: e.target.closest('main').getAttribute('index')
+      }))
+    })
   }
+
   get tagContent() {
     return this.getAttribute('tagContent')
   }
 
+  get tagIndex() {
+    return this.getAttribute('index')
+  }
+
   render() {
     this.shadow.innerHTML =`
-    <main class="tag-list">
+    <main class="tag-list" index="${this.tagIndex}">
       <div class="tag-list__text">${this.tagContent}</div>
       <button class="tag-list__close">❌</button>
     </main>
-
-
 
     <style>
       html {

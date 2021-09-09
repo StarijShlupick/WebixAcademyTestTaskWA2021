@@ -17,6 +17,13 @@ export class TagComponent extends HTMLElement {
     checkbox.addEventListener('click', this.changeReadonly.bind(this))
     const addButton = this.shadow.querySelector('.controll__button')
     addButton.addEventListener('click', this.addTag.bind(this))
+    const listComponent = this.shadow.querySelectorAll('tag-list-element')
+    listComponent.forEach(element => {
+      element.addEventListener('tagClosed', (e) => {
+        const selectedTag = e.detail
+        this.deleteTag(selectedTag)
+      })
+    })
   }
   
   static get observedAttributes() {
@@ -49,6 +56,13 @@ export class TagComponent extends HTMLElement {
     this.readonly === 'true' ? checkbox.classList.add('active') : checkbox.classList.remove('active')
     const addButton = this.shadow.querySelector('.controll__button')
     addButton.addEventListener('click', this.addTag.bind(this))
+    const listComponent = this.shadow.querySelectorAll('tag-list-element')
+    listComponent.forEach(element => {
+      element.addEventListener('tagClosed', (e) => {
+        const selectedTag = e.detail
+        this.deleteTag(selectedTag)
+      })
+    })
   }
 
   changeReadonly() {
@@ -72,25 +86,29 @@ export class TagComponent extends HTMLElement {
     this.tagList = newTagList
   }
 
-  deleteTag() {
+  deleteTag(selectedTag) {
     if (this.readonly === 'true') {
       alert('Set Readonly mode to "OFF"')
       return
     }
     const tagListArray = window.localStorage.getItem('tag-list').split(',').filter((el) => el)
-    const newTagList = [inputValue, ...tagListArray].filter((el) => el).join(',')
+    tagListArray.splice(selectedTag, 1)
+    const newTagList = tagListArray.filter((el) => el).join(',')
     window.localStorage.setItem('tag-list', newTagList)
     this.tagList = newTagList
   }
 
   render() {
-    const tags = this.tagList?.split(',').map((el, index) => {
-      return `<tag-list-element tagContent="${el}" index=${index}></tag-list-element>`
+    const tags = !this.tagList ? 
+    '<p class="tag-list__empty">there is no tags yet...</p>' : 
+    this.tagList?.split(',').map((el, index) => {
+      return `<tag-list-element tagContent="${el}" index="${index}"></tag-list-element>`
     }).join('')
+
     this.shadow.innerHTML =`
     <main class="container">
       <section class="controll">
-          <input class="controll__input" type="text">
+          <input class="controll__input" type="text" placeholder="Your tag...">
           <button class="controll__button">Add</button>
       </section>
       <section class="tag-list">
@@ -98,8 +116,6 @@ export class TagComponent extends HTMLElement {
       </section>
       <button class="checkbox-button">Readonly mode: ${this.readonly === 'true' ? 'on' : 'off'}</button>
     </main>
-
-
 
     <style>
       html {
@@ -158,6 +174,11 @@ export class TagComponent extends HTMLElement {
         background-color: #ffffff;
         overflow: hidden;
         overflow-y: auto;
+      }
+      .tag-list__empty {
+        text-align: center;
+        margin: 20px;
+        font-size: 18px;
       }
       .checkbox-button {
         display: block;
